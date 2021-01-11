@@ -1,5 +1,5 @@
 local addon = LibStub("AceAddon-3.0"):NewAddon("VaultMinimapIcon", "AceConsole-3.0")
-local L = LibStub("AceLocale-3.0"):GetLocale("QuickLink", true)
+local L = LibStub("AceLocale-3.0"):GetLocale("VaultMinimapIcon", true)
 
 local ldb = LibStub("LibDataBroker-1.1"):NewDataObject("VaultMinimapIcon", {
 	type = "data source",
@@ -10,7 +10,6 @@ local ldb = LibStub("LibDataBroker-1.1"):NewDataObject("VaultMinimapIcon", {
             -- InterfaceOptionsFrame_OpenToCategory(addonName)
             -- InterfaceOptionsFrame_OpenToCategory(addonName)
         else
-            LoadAddOn("Blizzard_WeeklyRewards")
             if WeeklyRewardsFrame:IsShown() then
                 WeeklyRewardsFrame:Hide()
             else
@@ -22,12 +21,14 @@ local ldb = LibStub("LibDataBroker-1.1"):NewDataObject("VaultMinimapIcon", {
         local hasAvailableRewards = C_WeeklyRewards.HasAvailableRewards();
         local couldClaimRewardsInOnShow = C_WeeklyRewards.CanClaimRewards();
 
+        tt:AddLine(addonName)
 		if hasAvailableRewards then
-			tt:AddLine(addonName)
             tt:AddLine(L["REWARDS_AVAILABLE"])
+        elseif C_WeeklyRewards.HasGeneratedRewards() then
+			tt:AddLine(L["HAS_GENERATED_REWARDS"])
 		else
 			tt:AddLine(L["NO_REWARDS"])
-		end
+        end
 	end
 })
 
@@ -37,6 +38,8 @@ function addon:OnInitialize() -- Obviously you'll need a ## SavedVariables: Bunn
     self.db = LibStub("AceDB-3.0"):New("VaultMinimapIcon", { profile = { minimap = { hide = false, }, }, })
     icon:Register("VaultMinimapIcon", ldb, self.db.profile.minimap)
     self:RegisterChatCommand("vault", "ToggleVaultMinimapIcon")
+
+    LoadAddOn("Blizzard_WeeklyRewards")
 end
 
 function addon:ToggleVaultMinimapIcon()
