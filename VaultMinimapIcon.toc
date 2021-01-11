@@ -1,0 +1,10 @@
+## Interface: 90002
+## Title: VaultMinimapIcon
+## Notes: Adds a minimap icon to provide easy acces to the weekly rewards UI from any where in the game
+## Author: gentoomaniac
+## Version: 9.0.2-1.0.0
+## SavedVariables: VaultMinimapIcon
+
+embeds.xml
+locales\locales.xml
+core.lua
