@@ -2,14 +2,11 @@ local addon = LibStub("AceAddon-3.0"):NewAddon("VaultMinimapIcon", "AceConsole-3
 local L = LibStub("AceLocale-3.0"):GetLocale("VaultMinimapIcon", true)
 
 local ldb = LibStub("LibDataBroker-1.1"):NewDataObject("VaultMinimapIcon", {
-	type = "data source",
-	text = "VaultMinimapIcon",
+    type = "data source",
+    text = "VaultMinimapIcon",
     icon = "Interface\\ICONS\\Inv_legion_chest_KirinTor",
     OnClick = function()
-    	if button == "RightButton" then
-            -- InterfaceOptionsFrame_OpenToCategory(addonName)
-            -- InterfaceOptionsFrame_OpenToCategory(addonName)
-        else
+        if button ~= "RightButton" then
             if WeeklyRewardsFrame:IsShown() then
                 WeeklyRewardsFrame:Hide()
             else
@@ -18,18 +15,18 @@ local ldb = LibStub("LibDataBroker-1.1"):NewDataObject("VaultMinimapIcon", {
         end    
     end,
     OnTooltipShow = function(tt)
-        local hasAvailableRewards = C_WeeklyRewards.HasAvailableRewards();
-        local couldClaimRewardsInOnShow = C_WeeklyRewards.CanClaimRewards();
+        -- currentWeekBestLevel, weeklyRewardLevel, nextDifficultyWeeklyRewardLevel, nextBestLevel = C_MythicPlus.GetWeeklyChestRewardLevel()
 
         tt:AddLine(addonName)
-		if hasAvailableRewards then
+        -- tt:AddLine("Mythic+: " .. weeklyRewardLevel .. " ilvl (+" .. currentWeekBestLevel .. ")")
+        if C_WeeklyRewards.HasAvailableRewards() then
             tt:AddLine(L["REWARDS_AVAILABLE"])
         elseif C_WeeklyRewards.HasGeneratedRewards() then
-			tt:AddLine(L["HAS_GENERATED_REWARDS"])
-		else
-			tt:AddLine(L["NO_REWARDS"])
+            tt:AddLine(L["HAS_GENERATED_REWARDS"])
+        else
+            tt:AddLine(L["NO_REWARDS"])
         end
-	end
+    end
 })
 
 local icon = LibStub("LibDBIcon-1.0")
