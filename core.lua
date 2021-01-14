@@ -1,6 +1,12 @@
 local VaultMinimapButton = LibStub("AceAddon-3.0"):NewAddon("VaultMinimapButton", "AceConsole-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale("VaultMinimapButton", true)
 
+local MythicPlusRewards = {
+    One = 1,
+    Two = 4,
+    Three = 10,
+}
+
 local ldb = LibStub("LibDataBroker-1.1"):NewDataObject("VaultMinimapButton", {
     type = "data source",
     text = "VaultMinimapButton",
@@ -8,6 +14,7 @@ local ldb = LibStub("LibDataBroker-1.1"):NewDataObject("VaultMinimapButton", {
     OnClick = function()
         if button ~= "RightButton" then
             if WeeklyRewardsFrame:IsShown() then
+                -- C_WeeklyRewards.CloseInteraction()
                 WeeklyRewardsFrame:Hide()
             else
                 WeeklyRewardsFrame:Show()
@@ -18,10 +25,31 @@ local ldb = LibStub("LibDataBroker-1.1"):NewDataObject("VaultMinimapButton", {
         local activities = GetActivities()
 
         tt:SetText(L["ADDONNAME"])
+        tt:AddLine(L["CLICK_TO_OPEN"])
+        tt:AddDoubleLine(" ")
+
         tt:AddDoubleLine(L["MYTHICPLUS"])
         for index, activity in pairs(activities[Enum.WeeklyRewardChestThresholdType.MythicPlus]) do
             tt:AddLine(GetMythicPlusActivityString(activity))
         end
+        tt:AddDoubleLine(" ")
+
+        tt:AddDoubleLine(L["RAID"])
+        tt:AddDoubleLine(" ")
+
+        local sampleItem = C_WeeklyRewards.GetExampleRewardItemHyperlinks(activities[Enum.WeeklyRewardChestThresholdType.RankedPvP][1].id)
+        local iLvl = GetDetailedItemLevelInfo(sampleItem);
+        if iLvl then
+            tt:AddDoubleLine(string.format(L["RANKEDPVP_LOOT"], iLvl))
+        else
+            tt:AddDoubleLine(L["RANKEDPVP"])
+        end
+        for _, activity in pairs(activities[Enum.WeeklyRewardChestThresholdType.RankedPvP]) do
+            tt:AddLine(GetRatedPvPActivityString(activity))
+        end
+        tt:AddDoubleLine(" ")
+
+        --GetWeeksMythicPlusRuns()
     end
 })
 
@@ -62,11 +90,42 @@ function GetMythicPlusActivityString(activity)
     if activity.progress >= activity.threshold then
         local sampleItem = C_WeeklyRewards.GetExampleRewardItemHyperlinks(activity.id)
         local iLvl = GetDetailedItemLevelInfo(sampleItem);
+        nextLvl, nextiLvl = GetNextMythicPlusLootBracket(activity.level)
 
-        return "#" .. activity.index .. ": " .. iLvl .. " (+" .. activity.level ..")"
+        return string.format(L["MYTHICPLUS_REACHED"], iLvl, activity.level, nextiLvl, nextLvl)
     else
-        return "#" .. activity.index .. ": " .. activity.progress .. "/" .. activity.threshold
+        return string.format(L["MYTHICPLUS_NOT_REACHED"], 0, activity.progress, activity.threshold)
     end
+
+end
+
+function GetNextMythicPlusLootBracket(currentMax)
+    if currentMax < 2 then return 2, 200
+    elseif currentMax < 3 then return 3, 203
+    elseif currentMax < 4 then return 4, 207
+    elseif currentMax < 5 then return 5, 210
+    elseif currentMax < 7 then return 7, 213
+    elseif currentMax < 8 then return 8, 216
+    elseif currentMax < 10 then return 10, 220
+    elseif currentMax < 12 then return 12, 223
+    elseif currentMax < 14 then return 14, 226
+    else return nil
+    end
+end
+
+function GetIncompleteMythicPlusActivityILvl(rewardLevel)
+    mythicPlusRuns = C_MythicPlus.GetRunHistory(false, true)
+    print(dump(mythicPlusRuns))
+
+end
+
+function GetRatedPvPActivityString(activity)
+    if activity.progress >= activity.threshold then
+        return string.format(L["RANKEDPVP_REACHED"], iLvl)
+    else
+        return string.format(L["RANKEDPVP_NOT_REACHED"], activity.threshold - activity.progress)
+    end
+
 end
 
 function dump(o)
