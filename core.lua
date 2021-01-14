@@ -14,7 +14,7 @@ local ldb = LibStub("LibDataBroker-1.1"):NewDataObject("VaultMinimapButton", {
     OnClick = function()
         if button ~= "RightButton" then
             if WeeklyRewardsFrame:IsShown() then
-                -- C_WeeklyRewards.CloseInteraction()
+                C_WeeklyRewards.CloseInteraction()
                 WeeklyRewardsFrame:Hide()
             else
                 WeeklyRewardsFrame:Show()
