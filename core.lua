@@ -26,21 +26,21 @@ local ldb = LibStub("LibDataBroker-1.1"):NewDataObject("VaultMinimapButton", {
 
         tt:SetText(L["ADDONNAME"])
         tt:AddLine(L["CLICK_TO_OPEN"])
-        tt:AddDoubleLine(" ")
+        tt:AddLine(" ")
 
-        tt:AddDoubleLine(L["MYTHICPLUS"])
+        tt:AddLine(L["MYTHICPLUS"])
         for index, activity in pairs(activities[Enum.WeeklyRewardChestThresholdType.MythicPlus]) do
             tt:AddLine(GetMythicPlusActivityString(activity))
         end
-        tt:AddDoubleLine(" ")
+        tt:AddLine(" ")
 
-        tt:AddDoubleLine(L["RAID"])
-        tt:AddDoubleLine(" ")
+        tt:AddLine(L["RAID"])
+        tt:AddLine(" ")
 
         pvpHeader, pvpText = GetPvPText(activities[Enum.WeeklyRewardChestThresholdType.RankedPvP])
-        tt:AddDoubleLine(pvpHeader)
+        tt:AddLine(pvpHeader)
         tt:AddLine(pvpText)
-        tt:AddDoubleLine(" ")
+        tt:AddLine(" ")
 
         --GetWeeksMythicPlusRuns()
     end
