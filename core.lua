@@ -30,7 +30,7 @@ local ldb = LibStub("LibDataBroker-1.1"):NewDataObject("VaultMinimapButton", {
 
         tt:AddLine(L["MYTHICPLUS"])
         for index, activity in pairs(activities[Enum.WeeklyRewardChestThresholdType.MythicPlus]) do
-            tt:AddLine(GetMythicPlusActivityString(activity))
+            tt:AddDoubleLine(GetMythicPlusActivityString(activity))
         end
         tt:AddLine(" ")
 
@@ -41,8 +41,6 @@ local ldb = LibStub("LibDataBroker-1.1"):NewDataObject("VaultMinimapButton", {
         tt:AddLine(pvpHeader)
         tt:AddLine(pvpText)
         tt:AddLine(" ")
-
-        --GetWeeksMythicPlusRuns()
     end
 })
 
@@ -110,15 +108,24 @@ end
 
 function GetMythicPlusActivityString(activity)
     if activity.progress >= activity.threshold then
-        local sampleItem = C_WeeklyRewards.GetExampleRewardItemHyperlinks(activity.id)
-        local iLvl = GetDetailedItemLevelInfo(sampleItem);
+        sampleItem = C_WeeklyRewards.GetExampleRewardItemHyperlinks(activity.id)
+        iLvl = GetDetailedItemLevelInfo(sampleItem);
         nextLvl, nextiLvl = GetNextMythicPlusLootBracket(activity.level)
 
-        return string.format(L["MYTHICPLUS_REACHED"], iLvl, activity.level, nextiLvl, nextLvl)
-    else
-        return string.format(L["MYTHICPLUS_NOT_REACHED"], 0, activity.progress, activity.threshold)
-    end
+        return
+            string.format(L["MYTHICPLUS_REACHED"], iLvl, activity.level, nextiLvl, nextLvl),
+            string.format(L["MYTHICPLUS_NEXT_REWARD_ESTIMATE"], nextiLvl, nextLvl)
 
+
+    elseif activity.progress > 0 then
+        nextLvl = GetNextMythicPlusRewardLvl(activity.threshold)
+        rewardLvl = C_MythicPlus.GetRewardLevelFromKeystoneLevel(nextLvl)
+        return 
+            string.format(L["MYTHICPLUS_NOT_REACHED"], "\124T" .. READY_CHECK_WAITING_TEXTURE .. ":0|t", activity.progress, activity.threshold),
+            string.format(L["MYTHICPLUS_NEXT_REWARD_ESTIMATE"], rewardLvl, nextLvl)
+    else
+        return string.format(L["MYTHICPLUS_NOT_REACHED"], "\124T" .. READY_CHECK_WAITING_TEXTURE .. ":0|t", activity.progress, activity.threshold), ""
+    end
 end
 
 function GetNextMythicPlusLootBracket(currentMax)
@@ -135,10 +142,19 @@ function GetNextMythicPlusLootBracket(currentMax)
     end
 end
 
-function GetIncompleteMythicPlusActivityILvl(rewardLevel)
-    mythicPlusRuns = C_MythicPlus.GetRunHistory(false, true)
-    print(dump(mythicPlusRuns))
+function GetNextMythicPlusRewardLvl()
+    local mythicPlusRuns = C_MythicPlus.GetRunHistory(false, true)
 
+    local mythicPlusLevels = {}
+
+    for index, run in pairs(mythicPlusRuns) do
+        table.insert(mythicPlusLevels, run.level)
+    end
+    table.sort(mythicPlusLevels)
+
+    reult = {}
+
+    return mythicPlusLevels[1], mythicPlusLevels[4] or mythicPlusLevels[-1], mythicPlusLevels[10] or mythicPlusLevels[-1]
 end
 
 function dump(o)
