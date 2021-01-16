@@ -129,17 +129,16 @@ function GetMythicPlusActivityString(activity)
 end
 
 function GetNextMythicPlusLootBracket(currentMax)
-    if currentMax < 2 then return 2, 200
-    elseif currentMax < 3 then return 3, 203
-    elseif currentMax < 4 then return 4, 207
-    elseif currentMax < 5 then return 5, 210
-    elseif currentMax < 7 then return 7, 213
-    elseif currentMax < 8 then return 8, 216
-    elseif currentMax < 10 then return 10, 220
-    elseif currentMax < 12 then return 12, 223
-    elseif currentMax < 14 then return 14, 226
-    else return nil
-    end
+    if currentMax >= 15 then return nil end
+
+    local currentReward = C_MythicPlus.GetRewardLevelFromKeystoneLevel(currentMax)
+    local newMax = currentMax
+    repeat
+        newMax = newMax + 1
+        newReward = C_MythicPlus.GetRewardLevelFromKeystoneLevel(newMax)
+    until newReward > currentReward
+
+    return newMax, newReward
 end
 
 function GetNextMythicPlusRewardLvl()
