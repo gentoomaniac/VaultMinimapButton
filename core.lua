@@ -44,35 +44,6 @@ local ldb = LibStub("LibDataBroker-1.1"):NewDataObject("VaultMinimapButton", {
     end
 })
 
-function GetPvPText(activities)
-    local header = ""
-    local text = ""
-
-    if activities[1].progress >= activities[1].threshold then
-        local sampleItem = C_WeeklyRewards.GetExampleRewardItemHyperlinks(activities[1].id)
-        local iLvl = GetDetailedItemLevelInfo(sampleItem);
-        header = string.format(L["RANKEDPVP_LOOT"], iLvl)
-        text = "\124T" .. READY_CHECK_READY_TEXTURE .. ":0|t"
-    else
-        header = L["RANKEDPVP"]
-        text = "|cFFFF9900" .. tostring(activities[1].threshold - activities[1].progress) .. "|r"
-    end
-
-    if activities[2].progress >= activities[2].threshold then
-        text = text .. "\124T" .. READY_CHECK_READY_TEXTURE .. ":0|t"
-    else
-        text = text .. " / |cFFFF9900" .. tostring(activities[2].threshold - activities[2].progress) .. "|r"
-    end
-
-    if activities[3].progress >= activities[3].threshold then
-        text = text .. "\124T" .. READY_CHECK_READY_TEXTURE .. ":0|t"
-    else
-        text = text .. " / |cFFFF9900" .. tostring(activities[3].threshold-activities[3].progress) .. "|r"
-    end
-
-    return header, text
-end
-
 local icon = LibStub("LibDBIcon-1.0")
 
 function VaultMinimapButton:ToggleVaultMinimapButton()
@@ -154,6 +125,35 @@ function GetNextMythicPlusRewardLvl()
     reult = {}
 
     return mythicPlusLevels[1], mythicPlusLevels[4] or mythicPlusLevels[-1], mythicPlusLevels[10] or mythicPlusLevels[-1]
+end
+
+function GetPvPText(activities)
+    local header = ""
+    local text = ""
+
+    if activities[1].progress >= activities[1].threshold then
+        local sampleItem = C_WeeklyRewards.GetExampleRewardItemHyperlinks(activities[1].id)
+        local iLvl = GetDetailedItemLevelInfo(sampleItem);
+        header = string.format(L["RANKEDPVP_LOOT"], iLvl)
+        text = "\124T" .. READY_CHECK_READY_TEXTURE .. ":0|t"
+    else
+        header = L["RANKEDPVP"]
+        text = "|cFFFF9900" .. tostring(activities[1].threshold - activities[1].progress) .. "|r"
+    end
+
+    if activities[2].progress >= activities[2].threshold then
+        text = text .. "\124T" .. READY_CHECK_READY_TEXTURE .. ":0|t"
+    else
+        text = text .. " / |cFFFF9900" .. tostring(activities[2].threshold - activities[2].progress) .. "|r"
+    end
+
+    if activities[3].progress >= activities[3].threshold then
+        text = text .. "\124T" .. READY_CHECK_READY_TEXTURE .. ":0|t"
+    else
+        text = text .. " / |cFFFF9900" .. tostring(activities[3].threshold-activities[3].progress) .. "|r"
+    end
+
+    return header, text
 end
 
 function dump(o)
