@@ -19,7 +19,7 @@ local ldb = LibStub("LibDataBroker-1.1"):NewDataObject("VaultMinimapButton", {
             else
                 WeeklyRewardsFrame:Show()
             end
-        end    
+        end
     end,
     OnTooltipShow = function(tt)
         local activities = GetActivities()
@@ -120,7 +120,7 @@ function GetMythicPlusActivityString(activity)
     elseif activity.progress > 0 then
         nextLvl = GetNextMythicPlusRewardLvl(activity.threshold)
         rewardLvl = C_MythicPlus.GetRewardLevelFromKeystoneLevel(nextLvl)
-        return 
+        return
             string.format(L["MYTHICPLUS_NOT_REACHED"], "\124T" .. READY_CHECK_WAITING_TEXTURE .. ":0|t", activity.progress, activity.threshold),
             string.format(L["MYTHICPLUS_NEXT_REWARD_ESTIMATE"], rewardLvl, nextLvl)
     else
@@ -168,4 +168,3 @@ function dump(o)
        return tostring(o)
     end
  end
-
