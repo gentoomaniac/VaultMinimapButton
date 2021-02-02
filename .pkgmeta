@@ -13,6 +13,6 @@ externals:
     libs/AceConsole-3.0:
         url: https://repos.wowace.com/wow/ace3/trunk/AceConsole-3.0
     libs/LibStub:
-        url: svn://svn.wowace.com/wow/libstub/mainline/trunk/libstub
+        url: https://repos.wowace.com/wow/libstub/mainline/trunk
     libs/LibDBIcon-1.0:
-        url:https://repos.wowace.com/wow/libdbicon-1-0/trunk/LibDBIcon-1.0
+        url: https://repos.wowace.com/wow/libdbicon-1-0/trunk/LibDBIcon-1.0
