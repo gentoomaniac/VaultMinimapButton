@@ -35,6 +35,10 @@ local ldb = LibStub("LibDataBroker-1.1"):NewDataObject("VaultMinimapButton", {
         tt:AddLine(" ")
 
         tt:AddLine(L["RAID"])
+        for index, activity in pairs(activities[Enum.WeeklyRewardChestThresholdType.Raid]) do
+            tt:AddDoubleLine(GetRaidActivityString(activity))
+            --print(dump(activity))
+        end
         tt:AddLine(" ")
 
         pvpHeader, pvpText = GetPvPText(activities[Enum.WeeklyRewardChestThresholdType.RankedPvP])
@@ -125,6 +129,25 @@ function GetNextMythicPlusRewardLvl()
     reult = {}
 
     return mythicPlusLevels[1], mythicPlusLevels[4] or mythicPlusLevels[-1], mythicPlusLevels[10] or mythicPlusLevels[-1]
+end
+
+function GetRaidActivityString(activity)
+    if activity.progress >= activity.threshold then
+        sampleItem = C_WeeklyRewards.GetExampleRewardItemHyperlinks(activity.id)
+        iLvl = GetDetailedItemLevelInfo(sampleItem);
+
+        return
+            string.format(L["RAID_REACHED"], iLvl, activity.level),
+            string.format(L["RAID_NEXT_REWARD_ESTIMATE"])
+
+
+    elseif activity.progress > 0 then
+        return
+            string.format(L["RAID_NOT_REACHED"], "\124T" .. READY_CHECK_WAITING_TEXTURE .. ":0|t", activity.progress, activity.threshold),
+            string.format(L["RAID_NEXT_REWARD_ESTIMATE"])
+    else
+        return string.format(L["RAID_NOT_REACHED"], "\124T" .. READY_CHECK_WAITING_TEXTURE .. ":0|t", activity.progress, activity.threshold), ""
+    end
 end
 
 function GetPvPText(activities)

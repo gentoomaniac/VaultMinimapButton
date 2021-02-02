@@ -6,10 +6,13 @@ if L then
 
     L["MYTHICPLUS"] = "Mythic+"
     L["MYTHICPLUS_REACHED"] = "|cFF006600%d|r (|cFFFFFFFF+%d|r)"
-    L["MYTHICPLUS_NOT_REACHED"] = "%s (|cFFFF9900%s|r/|cFFFFFFFF%d|r)"
+    L["MYTHICPLUS_NOT_REACHED"] = "%s (|cFFFF9900%d|r/|cFFFFFFFF%d|r)"
     L["MYTHICPLUS_NEXT_REWARD_ESTIMATE"] = "|cFFFF9900%d|r (|cFFFFFFFF+%d|r)"
 
-    L["RAID"] = "Raids"
+    L["RAID"] = "Raid"
+    L["RAID_REACHED"] = "|cFF006600%d|r (|cFFFFFFFF+%d|r)"
+    L["RAID_NOT_REACHED"] = "%s (|cFFFF9900%d|r/|cFFFFFFFF%d|r)"
+    L["RAID_NEXT_REWARD_ESTIMATE"] = "|cFFFF99000|r (|cFFFFFFFFHC|r)"
 
     L["RANKEDPVP"] = "PvP"
     L["RANKEDPVP_LOOT"] = "PvP (|cFFFFFFFF%d|r)"
