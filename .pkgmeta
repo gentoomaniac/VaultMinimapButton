@@ -15,4 +15,4 @@ externals:
     libs/LibStub:
         url: https://repos.wowace.com/wow/libstub/mainline/trunk
     libs/LibDBIcon-1.0:
-        url: https://repos.wowace.com/wow/libdbicon-1-0/trunk/LibDBIcon-1.0
+        url: https://repos.wowace.com/wow/libdbicon-1-0/trunk
